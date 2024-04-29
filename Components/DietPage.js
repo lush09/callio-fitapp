@@ -175,14 +175,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fff',
     marginTop: 5,
-    marginLeft: 20,
+    marginLeft: 10,
     padding: 10,
     width: '50%',
     marginBottom: 20,
     borderRadius: 8,
   },
   activityLevelContainer: {
-    marginLeft: 20,
+    marginLeft: 10,
   },
   activityLevelText: {
     color: '#fff',
