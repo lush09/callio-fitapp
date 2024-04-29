@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 25,
-    paddingTop: 40,
+    paddingTop: 10,
   },
   headerText: {
     color: '#FFFFFF',

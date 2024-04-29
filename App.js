@@ -12,6 +12,7 @@ import DietIcon from './assets/App-Icons/diet.png';
 import QuizIcon from './assets/App-Icons/quiz.png';
 import FightIcon from './assets/App-Icons/fight.png';
 import ProfileIcon from './assets/App-Icons/profile.png';
+import { useFonts } from 'expo-font';
 
 export default function App() {
   const [activePage, setActivePage] = useState('Workouts');
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#16191F',
     paddingHorizontal: 25,
-    paddingTop: 40,
+    paddingTop: 10,
   },
   headerText: {
     color: '#FFFFFF',

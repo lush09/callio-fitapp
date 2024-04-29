@@ -4,7 +4,6 @@ const db = SQLite.openDatabase('characterData.db');
 
 export const initializeDatabase = () => {
   db.transaction((tx) => {
-    tx.executeSql('DROP TABLE IF EXISTS characters;'); // Add this line
     tx.executeSql(
       `CREATE TABLE IF NOT EXISTS characters (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -15,16 +14,56 @@ export const initializeDatabase = () => {
         intelligence INTEGER NOT NULL DEFAULT 1
       );`
     );
+
+    // Add missing columns if they don't exist
+    tx.executeSql(
+      `SELECT * FROM pragma_table_info('characters') WHERE name='height';`,
+      [],
+      (_, res) => {
+        if (res.rows.length === 0) {
+          tx.executeSql('ALTER TABLE characters ADD COLUMN height INTEGER;');
+        }
+      }
+    );
+
+    tx.executeSql(
+      `SELECT * FROM pragma_table_info('characters') WHERE name='weight';`,
+      [],
+      (_, res) => {
+        if (res.rows.length === 0) {
+          tx.executeSql('ALTER TABLE characters ADD COLUMN weight INTEGER;');
+        }
+      }
+    );
+
+    tx.executeSql(
+      `SELECT * FROM pragma_table_info('characters') WHERE name='age';`,
+      [],
+      (_, res) => {
+        if (res.rows.length === 0) {
+          tx.executeSql('ALTER TABLE characters ADD COLUMN age INTEGER;');
+        }
+      }
+    );
+
+    tx.executeSql(
+      `SELECT * FROM pragma_table_info('characters') WHERE name='activity';`,
+      [],
+      (_, res) => {
+        if (res.rows.length === 0) {
+          tx.executeSql('ALTER TABLE characters ADD COLUMN activity TEXT;');
+        }
+      }
+    );
   });
 };
 
-export const createCharacter = (username, isMale) => {
-  const gender = isMale ? 'male' : 'female';
+export const updateCharacterDetails = (height, weight, age, activity) => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'INSERT INTO characters (username, gender, vitality, strength, intelligence) VALUES (?, ?, 5, 1, 1)', // Add the gender column here
-        [username, gender], // Pass the gender value here
+        'UPDATE characters SET height = ?, weight = ?, age = ?, activity = ?',
+        [height, weight, age, activity],
         (_, result) => {
           resolve(result);
         },
@@ -35,6 +74,25 @@ export const createCharacter = (username, isMale) => {
     });
   });
 };
+
+export const createCharacter = (username, isMale) => {
+  const gender = isMale ? 'male' : 'female';
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'INSERT INTO characters (username, gender, vitality, strength, intelligence) VALUES (?, ?, 5, 1, 1)',
+        [username, gender],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
 export const getCharacter = () => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {

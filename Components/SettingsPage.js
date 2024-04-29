@@ -4,6 +4,7 @@ import { getCharacter } from '../Database/database';
 
 const SettingsPage = () => {
   const [username, setUsername] = useState('');
+  const [gender, setGender] = useState('');
 
   useEffect(() => {
     const fetchCharacter = async () => {
@@ -11,6 +12,7 @@ const SettingsPage = () => {
         const character = await getCharacter();
         if (character) {
           setUsername(character.username);
+          setGender(character.gender);
         }
       } catch (error) {
         console.error('Error fetching character:', error);
@@ -23,7 +25,11 @@ const SettingsPage = () => {
   return (
     <View style={styles.settingsBody}>
       <Text style={styles.settingsText}>Settings Page</Text>
-      {username && <Text style={styles.settingsText}>Welcome, {username}!</Text>}
+      {username && gender && (
+        <Text style={styles.settingsText}>
+          Welcome, {username} ({gender})!
+        </Text>
+      )}
     </View>
   );
 };
