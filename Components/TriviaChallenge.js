@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useFonts } from 'expo-font';
 import { StyleSheet, View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
-import { getLevelData, markLevelCompleted } from '../Database/database';
+import { getLevelData } from '../Database/database';
 
-const QuizPage = () => {
-  const [userInput, setUserInput] = useState([]);
-  const [answer, setAnswer] = useState('');
+const TriviaChallenge = ({ route }) => {
+  const { levelId } = route.params;
+  const [userInput, setUserInput] = useState(Array(4).fill(''));
   const [lives, setLives] = useState(3);
   const [hints, setHints] = useState(['']);
   const [gameOver, setGameOver] = useState(false);
-  const [currentLevel, setCurrentLevel] = useState(1);
 
   const [fontsLoaded] = useFonts({
     'Poppins-Light': require('../assets/Font/Poppins-Light.ttf'),
@@ -17,41 +16,23 @@ const QuizPage = () => {
     'Poppins-Black': require('../assets/Font/Poppins-Light.ttf'),
   });
 
-  useEffect(() => {
-    fetchLevelData(currentLevel);
-  }, [currentLevel]);
-
-  const fetchLevelData = async (levelId) => {
-    try {
-      const levelData = await getLevelData(levelId);
-      setAnswer(levelData.word);
-      setHints([levelData.hint1, levelData.hint2, levelData.hint3]);
-      setUserInput(Array(levelData.word.length).fill(''));
-    } catch (error) {
-      console.error('Error fetching level data:', error);
-    }
-  };
-
-  const resetGame = () => {
-    setUserInput(Array(answer.length).fill(''));
-    setLives(3);
-    setHints(['']);
-    setGameOver(false);
-  };
-
-  const handleNextLevel = async () => {
-    try {
-      await markLevelCompleted(currentLevel);
-      setCurrentLevel(currentLevel + 1);
-      resetGame();
-    } catch (error) {
-      console.error('Error marking level as completed:', error);
-    }
-  };
-
   if (!fontsLoaded) {
     return null;
   }
+
+  React.useEffect(() => {
+    const fetchLevelData = async () => {
+      try {
+        const levelData = await getLevelData(levelId);
+        setAnswer(levelData.word);
+        setHints([levelData.hint1, levelData.hint2, levelData.hint3]);
+      } catch (error) {
+        console.error('Error fetching level data:', error);
+      }
+    };
+
+    fetchLevelData();
+  }, [levelId]);
 
   const handleInputChange = (text, index) => {
     const newInput = [...userInput];
@@ -62,27 +43,27 @@ const QuizPage = () => {
   const handleGuess = () => {
     const joined = userInput.join('');
     if (joined === answer) {
-      Alert.alert('Correct!', 'You guessed the answer correctly!', [
-        { text: 'Next Level', onPress: handleNextLevel },
-      ]);
+      Alert.alert('Correct!', 'You guessed the answer correctly!');
     } else if (joined.length === answer.length && joined !== answer) {
       if (lives > 1) {
         setLives(lives - 1);
-        setHints([...hints.slice(1), '']);
-        setUserInput(Array(answer.length).fill(''));
+        setHints([...hints, allHints[allHints.length - lives]]);
+        setUserInput(Array(4).fill(''));
       } else {
         setGameOver(true);
-        Alert.alert('Game Over', `You ran out of lives. The answer was ${answer}.`, [
-          { text: 'Next Level', onPress: handleNextLevel },
-        ]);
+        Alert.alert('Game Over', `You ran out of lives. The answer was ${answer}.`);
       }
     }
   };
 
   return (
     <View style={styles.quizBody}>
-      <Text style={styles.quizHeader}>Level {currentLevel}</Text>
-      <Text style={styles.quizText}>A type of exercise that involves a lot of stretching.</Text>
+      <Text style={styles.quizHeader}>
+        Word OTD
+      </Text>
+      <Text style={styles.quizText}>
+        A type of exercise that involves a lot of stretching.
+      </Text>
       {hints.map((hint, index) => (
         <Text key={index} style={styles.hintText}>
           {hint}
@@ -119,6 +100,11 @@ const styles = StyleSheet.create({
     fontSize: 40,
     alignSelf: 'center',
   },
+  quizText: {
+    color: '#FFFFFF',
+    fontFamily: 'Poppins-Light',
+    fontSize: 20,
+  },
   inputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -134,10 +120,7 @@ const styles = StyleSheet.create({
   },
   hintText: {
     color: '#FFFFFF',
-    fontFamily: 'Poppins-Light',
-    fontSize: 17,
-    marginLeft: 10,
-    marginRight: 10,
+    fontFamily: 'Poppins-Bold',
     marginBottom: 5,
   },
   guessButton: {
@@ -161,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuizPage;
+export default TriviaChallenge;
