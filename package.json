@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "crosswords-js": "^0.1.14",
     "expo": "~50.0.14",
     "expo-font": "^11.10.3",
     "expo-sqlite": "^13.4.0",
