@@ -170,21 +170,3 @@ export const getLevelData = (levelId) => {
     });
   });
 };
-
-export const getCompletedLevels = () => {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT id FROM levels WHERE completed = 1',
-        [],
-        (_, result) => {
-          const completedLevelIds = result.rows._array.map((row) => row.id);
-          resolve(completedLevelIds);
-        },
-        (_, error) => {
-          reject(error);
-        }
-      );
-    });
-  });
-};
