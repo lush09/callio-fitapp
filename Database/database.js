@@ -171,15 +171,18 @@ export const getLevelData = (levelId) => {
   });
 };
 
-export const getCompletedLevels = () => {
+export const getUnfinishedLevel = () => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT id FROM levels WHERE completed = 1',
+        'SELECT id, word, hint1, hint2, hint3 FROM levels WHERE completed = 0 ORDER BY id LIMIT 1',
         [],
         (_, result) => {
-          const completedLevelIds = result.rows._array.map((row) => row.id);
-          resolve(completedLevelIds);
+          if (result.rows.length > 0) {
+            resolve(result.rows._array[0]);
+          } else {
+            resolve(null); // All levels are completed
+          }
         },
         (_, error) => {
           reject(error);
