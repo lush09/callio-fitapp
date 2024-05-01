@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import { StyleSheet, View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
-import { getLevelData, markLevelCompleted } from '../Database/database';
+import * as SQLite from 'expo-sqlite';
+import { getLevelData, markLevelCompleted, getCompletedLevels } from '../Database/database';
 
 const QuizPage = () => {
   const [userInput, setUserInput] = useState([]);
@@ -10,6 +11,8 @@ const QuizPage = () => {
   const [hints, setHints] = useState(['']);
   const [gameOver, setGameOver] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(1);
+  const [completedLevels, setCompletedLevels] = useState([]);
+  const maxLevelCount = 6; 
 
   const [fontsLoaded] = useFonts({
     'Poppins-Light': require('../assets/Font/Poppins-Light.ttf'),
@@ -20,6 +23,22 @@ const QuizPage = () => {
   useEffect(() => {
     fetchLevelData(currentLevel);
   }, [currentLevel]);
+
+  useEffect(() => {
+    fetchCompletedLevels();
+  }, []);
+  
+  const fetchCompletedLevels = async () => {
+    try {
+      const completedLevelIds = await getCompletedLevels();
+      setCompletedLevels(completedLevelIds);
+      const lastUnfinishedLevel = Math.max(...completedLevelIds) + 1 || 1;
+      setCurrentLevel(lastUnfinishedLevel);
+      fetchLevelData(lastUnfinishedLevel);
+    } catch (error) {
+      console.error('Error fetching completed levels:', error);
+    }
+  };
 
   const fetchLevelData = async (levelId) => {
     try {
@@ -41,9 +60,46 @@ const QuizPage = () => {
 
   const handleNextLevel = async () => {
     try {
+      const nextLevel = currentLevel + 1;
       await markLevelCompleted(currentLevel);
-      setCurrentLevel(currentLevel + 1);
-      resetGame();
+      setCompletedLevels([...completedLevels, currentLevel]);
+  
+      if (nextLevel <= maxLevelCount) {
+        setCurrentLevel(nextLevel);
+        resetGame();
+      } else {
+        Alert.alert(
+          'Congratulations!',
+          'You have completed all levels!',
+          [
+            {
+              text: 'Restart',
+              onPress: async () => {
+                try {
+                  const db = SQLite.openDatabase('characterData.db');
+                  db.transaction((tx) => {
+                    tx.executeSql(
+                      'UPDATE levels SET completed = 0',
+                      [],
+                      () => {
+                        setCompletedLevels([]);
+                        setCurrentLevel(1);
+                        resetGame();
+                      },
+                      (_, error) => {
+                        console.error('Error resetting levels:', error);
+                      }
+                    );
+                  });
+                } catch (error) {
+                  console.error('Error opening database:', error);
+                }
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      }
     } catch (error) {
       console.error('Error marking level as completed:', error);
     }
