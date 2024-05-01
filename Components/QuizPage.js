@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import { StyleSheet, View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
-import { getLevelData, markLevelCompleted } from '../Database/database';
+import { getUnfinishedLevel, markLevelCompleted } from '../Database/database';
 
 const QuizPage = () => {
   const [userInput, setUserInput] = useState([]);
@@ -18,17 +18,23 @@ const QuizPage = () => {
   });
 
   useEffect(() => {
-    fetchLevelData(currentLevel);
-  }, [currentLevel]);
+    fetchUnfinishedLevel();
+  }, []);
 
-  const fetchLevelData = async (levelId) => {
+  const fetchUnfinishedLevel = async () => {
     try {
-      const levelData = await getLevelData(levelId);
-      setAnswer(levelData.word);
-      setHints([levelData.hint1, levelData.hint2, levelData.hint3]);
-      setUserInput(Array(levelData.word.length).fill(''));
+      const levelData = await getUnfinishedLevel();
+      if (levelData) {
+        setCurrentLevel(levelData.id);
+        setAnswer(levelData.word);
+        setHints([levelData.hint1, levelData.hint2, levelData.hint3]);
+        setUserInput(Array(levelData.word.length).fill(''));
+      } else {
+        // All levels are completed, start from the first level
+        fetchLevelData(1);
+      }
     } catch (error) {
-      console.error('Error fetching level data:', error);
+      console.error('Error fetching unfinished level:', error);
     }
   };
 
@@ -42,8 +48,16 @@ const QuizPage = () => {
   const handleNextLevel = async () => {
     try {
       await markLevelCompleted(currentLevel);
-      setCurrentLevel(currentLevel + 1);
-      resetGame();
+      const nextLevelData = await getUnfinishedLevel();
+      if (nextLevelData) {
+        setCurrentLevel(nextLevelData.id);
+        setAnswer(nextLevelData.word);
+        setHints([nextLevelData.hint1, nextLevelData.hint2, nextLevelData.hint3]);
+        setUserInput(Array(nextLevelData.word.length).fill(''));
+      } else {
+        // All levels are completed, start from the first level
+        fetchLevelData(1);
+      }
     } catch (error) {
       console.error('Error marking level as completed:', error);
     }
