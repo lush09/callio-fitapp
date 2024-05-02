@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, Text, View, TouchableOpacity,SafeAreaView } from 'react-native';
 import WorkoutPage from './Components/WorkoutPage.js';
 import DietPage from './Components/DietPage.js';
 import QuizPage from './Components/QuizPage.js';
@@ -57,7 +57,7 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {characterCreated ? (
         <>
           <View style={styles.header}>
@@ -85,7 +85,7 @@ export default function App() {
       ) : (
         <CharCreate onCharacterCreated={handleCharacterCreated} />
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, Dimensions,TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Image, Dimensions,TouchableOpacity, Modal, Pressable } from 'react-native';
 import Avatar from '../assets/Avatars/Male/body.png';
 import Arrow from '../assets/arrows.png';
 import Arm from '../assets/Buttons/arm.png';
@@ -11,30 +11,35 @@ var width = screenWidth * .6;
 var btnWidth = screenWidth * .4;
 
 const WorkoutPage = () => {
+  const [selectVisible, setselectVisible] = useState(true);
   return (
     <View style={styles.workoutBody}>
-      <Text style={styles.heading}>Pick a body part to work on:</Text>
-      <View style={styles.workoutContainer}>
-        <Image source={Avatar} style={styles.avatar}/>
-        <Image source={Arrow} style={styles.arrow}/>
-        <View style={styles.textArea}>
-          <TouchableOpacity style={styles.btn1}>
-            <Image source={UpperBody} style={styles.btnImage}/>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn2}>
-            <Image source={Arm} style={styles.btnImage}/>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn3}>
-            <Image source={LowerBody} style={styles.btnImage}/>
-          </TouchableOpacity>
+        <Text style={styles.heading}>Pick a body part to work on:</Text>
+        <View style={styles.workoutContainer}>
+          <Image source={Avatar} style={styles.avatar}/>
+          <Image source={Arrow} style={styles.arrow}/>
+          <View style={styles.textArea}>
+            <TouchableOpacity onPress={() => setselectVisible(false)} style={styles.btn1}>
+              <Image source={UpperBody} style={styles.btnImage}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btn2}>
+              <Image source={Arm} style={styles.btnImage}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btn3}>
+              <Image source={LowerBody} style={styles.btnImage}/>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  centeredView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '50%',
+  },
   workoutBody: {
     padding: 10,
     backgroundColor: '#16191F',
@@ -83,7 +88,7 @@ const styles = StyleSheet.create({
   btnImage: {
     width:btnWidth,
     height: btnWidth * .4,
-  }
+  },
 });
 
 export default WorkoutPage;
