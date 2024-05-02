@@ -18,14 +18,14 @@ const WorkoutPage = () => {
         <Image source={Avatar} style={styles.avatar}/>
         <Image source={Arrow} style={styles.arrow}/>
         <View style={styles.textArea}>
-          <TouchableOpacity>
-            <Image source={UpperBody} style={styles.btn1}/>
+          <TouchableOpacity style={styles.btn1}>
+            <Image source={UpperBody} style={styles.btnImage}/>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Image source={Arm} style={styles.btn2}/>
+          <TouchableOpacity style={styles.btn2}>
+            <Image source={Arm} style={styles.btnImage}/>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Image source={LowerBody} style={styles.btn3}/>
+          <TouchableOpacity style={styles.btn3}>
+            <Image source={LowerBody} style={styles.btnImage}/>
           </TouchableOpacity>
         </View>
       </View>
@@ -72,16 +72,15 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   btn1: {
-    width:btnWidth,
-    height: btnWidth * .4,
-    top:'50%',
+    top:'6%'
   },
   btn2: {
-    top:'80%',
-    width:btnWidth,
-    height: btnWidth * .4,
+    top:'26%'
   },
   btn3: {
+    top:'47%'
+  },
+  btnImage: {
     width:btnWidth,
     height: btnWidth * .4,
   }
