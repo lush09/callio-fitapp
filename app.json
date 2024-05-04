@@ -2,6 +2,7 @@
   "expo": {
     "name": "softeng-fitapp",
     "slug": "softeng-fitapp",
+    "scheme": "softeng-fitapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -32,6 +33,9 @@
       "eas": {
         "projectId": "56ae4712-e71a-459c-bc6d-5d0d38f6f3cd"
       }
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }

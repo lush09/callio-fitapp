@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity,SafeAreaView } from 'react-native';
-import WorkoutPage from './Components/WorkoutPage.js';
-import DietPage from './Components/DietPage.js';
-import QuizPage from './Components/QuizPage.js';
-import FightPage from './Components/FightPage.js';
-import SettingsPage from './Components/SettingsPage.js';
-import CharCreate from './CharCreate.js';
-import { initializeDatabase, getCharacter } from './Database/database.js';
-import WorkoutIcon from './assets/App-Icons/workout.png';
-import DietIcon from './assets/App-Icons/diet.png';
-import QuizIcon from './assets/App-Icons/quiz.png';
-import FightIcon from './assets/App-Icons/fight.png';
-import ProfileIcon from './assets/App-Icons/profile.png';
+import WorkoutPage from '../Components/WorkoutPage.js';
+import DietPage from '../Components/DietPage.js';
+import QuizPage from '../Components/QuizPage.js';
+import FightPage from '../Components/FightPage.js';
+import SettingsPage from '../Components/SettingsPage.js';
+import CharCreate from '../CharCreate.js';
+import { initializeDatabase, getCharacter } from '../Database/database.js';
+import WorkoutIcon from '../assets/App-Icons/workout.png';
+import DietIcon from '../assets/App-Icons/diet.png';
+import QuizIcon from '../assets/App-Icons/quiz.png';
+import FightIcon from '../assets/App-Icons/fight.png';
+import ProfileIcon from '../assets/App-Icons/profile.png';
 import { useFonts } from 'expo-font';
 
 export default function App() {
