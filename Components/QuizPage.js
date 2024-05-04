@@ -95,7 +95,6 @@ const QuizPage = () => {
   return (
     <View style={styles.quizBody}>
       <Text style={styles.quizHeader}>Level {currentLevel}</Text>
-      <Text style={styles.quizText}>A type of exercise that involves a lot of stretching.</Text>
       {hints.map((hint, index) => (
         <Text key={index} style={styles.hintText}>
           {hint}
