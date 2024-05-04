@@ -4,18 +4,21 @@ import { getCharacter } from '../Database/database';
 import rockIcon from '../assets/FightPage/rock.png';
 import paperIcon from '../assets/FightPage/paper.png';
 import scissorIcon from '../assets/FightPage/scissors.png';
+import HealthBar from './Healthbar';
 
 const RockPaperScissors = () => {
   const [playerChoice, setPlayerChoice] = useState(null);
   const [enemyChoice, setEnemyChoice] = useState(null);
   const [playerHP, setPlayerHP] = useState(0);
-  const [enemyHP, setEnemyHP] = useState(100);
+  const [enemyHP, setEnemyHP] = useState(50);
+  const [playerMaxHP, setPlayerMaxHP] = useState(0);
   const [playerStrength, setPlayerStrength] = useState(0);
 
   useEffect(() => {
     const fetchCharacterData = async () => {
       const character = await getCharacter();
       setPlayerHP(character.vitality);
+      setPlayerMaxHP(character.vitality);
       setPlayerStrength(character.strength);
     };
 
@@ -33,7 +36,7 @@ const RockPaperScissors = () => {
     if (result === 'player') {
       setEnemyHP(enemyHP - playerStrength);
     } else if (result === 'enemy') {
-      setPlayerHP(playerHP - 10);
+      setPlayerHP(playerHP - 1);
     }
   };
 
@@ -53,8 +56,14 @@ const RockPaperScissors = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Player HP: {playerHP}</Text>
-      <Text style={styles.text}>Enemy HP: {enemyHP}</Text>
+      <View style={styles.HPNumber}>
+        <Text style={styles.text}> {enemyHP}</Text>
+        <Text style={styles.text}>{playerHP}</Text>
+      </View>
+      <View style={styles.HPBars}>
+        <HealthBar percentage={playerHP / playerMaxHP} />
+        <HealthBar percentage={enemyHP / 100} fillerColor="red"/>
+      </View>
       <Text style={styles.text}>
         Player chose: {playerChoice ? playerChoice : 'None'}
       </Text>
@@ -96,6 +105,16 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 18,
     marginBottom: 20,
+  },
+  HPNumber: {
+    flexDirection: 'row',
+    gap: 260,
+    bottom: 353,
+    zIndex: 1,
+  },
+  HPBars:{
+    flexDirection: 'row',
+    bottom: 400,
   },
   choicesContainer: {
     flexDirection: 'row',

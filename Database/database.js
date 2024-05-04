@@ -9,7 +9,7 @@ export const initializeDatabase = () => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL,
         gender TEXT NOT NULL,
-        vitality INTEGER NOT NULL DEFAULT 5,
+        vitality INTEGER NOT NULL DEFAULT 10,
         strength INTEGER NOT NULL DEFAULT 1,
         intelligence INTEGER NOT NULL DEFAULT 1
       );`
