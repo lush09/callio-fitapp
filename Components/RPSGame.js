@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { getCharacter } from '../Database/database';
+import { getCharacter, getEnemy } from '../Database/database';
+import idleFight from '../assets/FightPage/idle.gif';
+import userPunch from '../assets/FightPage/userpunch.gif';
+import enemyPunch from '../assets/FightPage/enemypunch.gif';
+import versus from '../assets/FightPage/versus.png'
 import rockIcon from '../assets/FightPage/rock.png';
 import paperIcon from '../assets/FightPage/paper.png';
 import scissorIcon from '../assets/FightPage/scissors.png';
@@ -9,10 +13,15 @@ import HealthBar from './Healthbar';
 const RockPaperScissors = () => {
   const [playerChoice, setPlayerChoice] = useState(null);
   const [enemyChoice, setEnemyChoice] = useState(null);
+  const [enemyHP, setEnemyHP] = useState(0);
+  const [enemyMaxHP, setEnemyMaxHP] = useState(0);
+  const [enemyStrength, setEnemyStrength] = useState(0);
   const [playerHP, setPlayerHP] = useState(0);
-  const [enemyHP, setEnemyHP] = useState(50);
   const [playerMaxHP, setPlayerMaxHP] = useState(0);
   const [playerStrength, setPlayerStrength] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const [result, setResult] = useState(null);
+  const [fightAnimation, setFightAnimation] = useState(idleFight);
 
   useEffect(() => {
     const fetchCharacterData = async () => {
@@ -22,7 +31,15 @@ const RockPaperScissors = () => {
       setPlayerStrength(character.strength);
     };
 
+    const fetchEnemyData = async () => {
+      const enemy = await getEnemy();
+      setEnemyHP(enemy.vitality);
+      setEnemyMaxHP(enemy.vitality);
+      setEnemyStrength(enemy.strength);
+    };
+
     fetchCharacterData();
+    fetchEnemyData();
   }, []);
 
   const handlePlayerChoice = (choice) => {
@@ -33,11 +50,21 @@ const RockPaperScissors = () => {
     setEnemyChoice(enemyChoice);
 
     const result = determineWinner(choice, enemyChoice);
+    setResult(result);
+
     if (result === 'player') {
       setEnemyHP(enemyHP - playerStrength);
+      setFightAnimation(userPunch);
     } else if (result === 'enemy') {
-      setPlayerHP(playerHP - 1);
+      setPlayerHP(playerHP - enemyStrength);
+      setFightAnimation(enemyPunch);
     }
+
+    setShowResult(true);
+    setTimeout(() => {
+      setShowResult(false);
+      setFightAnimation(idleFight);
+    }, 2200);
   };
 
   const determineWinner = (player, enemy) => {
@@ -54,40 +81,74 @@ const RockPaperScissors = () => {
     }
   };
 
+  const getChoiceIcon = (choice, isVersus) => {
+    if (isVersus) {
+      return versus;
+    }
+  
+    switch (choice) {
+      case 'rock':
+        return rockIcon;
+      case 'paper':
+        return paperIcon;
+      case 'scissors':
+        return scissorIcon;
+      default:
+        return null;
+    }
+  };
+
+  const getChoiceBackgroundColor = (choice, result) => {
+    if (result === 'player' && choice === playerChoice) {
+      return 'green';
+    } else if (result === 'enemy' && choice === enemyChoice) {
+      return 'red';
+    } else {
+      return '#FEEFAD';
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.HPNumber}>
-        <Text style={styles.text}> {enemyHP}</Text>
         <Text style={styles.text}>{playerHP}</Text>
+        <Text style={styles.text}> {enemyHP}</Text>
       </View>
       <View style={styles.HPBars}>
         <HealthBar percentage={playerHP / playerMaxHP} />
-        <HealthBar percentage={enemyHP / 100} fillerColor="red"/>
+        <HealthBar percentage={enemyHP / enemyMaxHP} fillerColor="red" />
       </View>
-      <Text style={styles.text}>
-        Player chose: {playerChoice ? playerChoice : 'None'}
-      </Text>
-      <Text style={styles.text}>
-        Enemy chose: {enemyChoice ? enemyChoice : 'None'}
-      </Text>
+      <Image source={fightAnimation} style={styles.fightAnimation} />
       <View style={styles.choicesContainer}>
         <TouchableOpacity
-          style={styles.choice}
+          style={[
+            styles.choice,
+            { backgroundColor: showResult ? getChoiceBackgroundColor('rock', result) : '#FEEFAD' },
+          ]}
+          disabled={showResult}
           onPress={() => handlePlayerChoice('rock')}
         >
-          <Image source={rockIcon} style={styles.btnImage}/>
+          <Image source={showResult ? getChoiceIcon(playerChoice) : rockIcon} style={styles.btnImage} />
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.choice}
+          style={[
+            styles.choice,
+            { backgroundColor: showResult ? getChoiceBackgroundColor('paper', result) : '#FEEFAD' },
+          ]}
+          disabled={showResult}
           onPress={() => handlePlayerChoice('paper')}
         >
-          <Image source={paperIcon} style={styles.btnImage}/>
+          <Image source={showResult ? versus : paperIcon} style={styles.btnImage} />
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.choice}
+          style={[
+            styles.choice,
+            { backgroundColor: showResult ? getChoiceBackgroundColor('scissors', result) : '#FEEFAD' },
+          ]}
+          disabled={showResult}
           onPress={() => handlePlayerChoice('scissors')}
         >
-          <Image source={scissorIcon} style={styles.btnImage}/>
+          <Image source={showResult ? getChoiceIcon(enemyChoice) : scissorIcon} style={styles.btnImage} />
         </TouchableOpacity>
       </View>
     </View>
@@ -98,7 +159,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'flex-end',
-    backgroundColor: '#16191F',
+    backgroundColor: '#000',
     height: 610,
   },
   text: {
@@ -108,19 +169,24 @@ const styles = StyleSheet.create({
   },
   HPNumber: {
     flexDirection: 'row',
-    gap: 260,
-    bottom: 353,
+    gap: 270,
+    bottom: 45,
     zIndex: 1,
   },
-  HPBars:{
+  HPBars: {
     flexDirection: 'row',
-    bottom: 400,
+    bottom: 100,
+    borderWidth: 7,
+    borderColor: '#FFC100',
+  },
+  fightAnimation: {
+    height: 380,
+    width: 340,
   },
   choicesContainer: {
     flexDirection: 'row',
   },
   choice: {
-    backgroundColor: '#FEEFAD',
     padding: 20,
     width: 120,
     borderWidth: 7,

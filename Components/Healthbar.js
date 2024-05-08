@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   container: {
     height: 35,
     width: '50%',
-    backgroundColor: '#ccc',
+    backgroundColor: '#000',
     overflow: 'hidden',
   },
   filler: {

@@ -15,7 +15,16 @@ export const initializeDatabase = () => {
       );`
     );
 
-    // Add missing columns if they don't exist
+    tx.executeSql(
+      `CREATE TABLE IF NOT EXISTS combatEnemy (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        level INTEGER NOT NULL DEFAULT 1,
+        vitality INTEGER NOT NULL DEFAULT 5,
+        strength INTEGER NOT NULL DEFAULT 1,
+        intelligence INTEGER NOT NULL DEFAULT 0
+      );`
+    );
+
     tx.executeSql(
       `SELECT * FROM pragma_table_info('characters') WHERE name='height';`,
       [],
@@ -82,6 +91,10 @@ export const initializeDatabase = () => {
         [level.word, level.hint1, level.hint2, level.hint3]
       );
     });
+
+    tx.executeSql(
+      'INSERT INTO combatEnemy (level, vitality, strength, intelligence) VALUES (1, 5, 1, 0)',
+    );
   });
 };
 
@@ -125,6 +138,23 @@ export const getCharacter = () => {
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT * FROM characters LIMIT 1',
+        [],
+        (_, result) => {
+          resolve(result.rows._array[0]);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+export const getEnemy = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM combatEnemy LIMIT 1',
         [],
         (_, result) => {
           resolve(result.rows._array[0]);
