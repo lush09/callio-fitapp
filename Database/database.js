@@ -10,7 +10,7 @@ export const initializeDatabase = () => {
         username TEXT NOT NULL,
         gender TEXT NOT NULL,
         vitality INTEGER NOT NULL DEFAULT 10,
-        strength INTEGER NOT NULL DEFAULT 1,
+        strength INTEGER NOT NULL DEFAULT 2,
         intelligence INTEGER NOT NULL DEFAULT 1
       );`
     );
@@ -19,11 +19,10 @@ export const initializeDatabase = () => {
       `CREATE TABLE IF NOT EXISTS combatEnemy (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         level INTEGER NOT NULL DEFAULT 1,
-        vitality INTEGER NOT NULL DEFAULT 5,
-        strength INTEGER NOT NULL DEFAULT 1,
-        intelligence INTEGER NOT NULL DEFAULT 0
       );`
     );
+
+    const initialLevel = 1;
 
     tx.executeSql(
       `SELECT * FROM pragma_table_info('characters') WHERE name='height';`,
@@ -93,17 +92,18 @@ export const initializeDatabase = () => {
     });
 
     tx.executeSql(
-      'INSERT INTO combatEnemy (level, vitality, strength, intelligence) VALUES (1, 5, 1, 0)',
+      'INSERT INTO combatEnemy (level) VALUES (?)',
+      [initialLevel]
     );
   });
 };
 
-export const updateCharacterDetails = (height, weight, age, activity) => {
+export const updateCharacterDetails = (height, weight, age, activity, intelligence) => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'UPDATE characters SET height = ?, weight = ?, age = ?, activity = ?',
-        [height, weight, age, activity],
+        'UPDATE characters SET height = ?, weight = ?, age = ?, activity = ?, intelligence = ?',
+        [height, weight, age, activity, intelligence],
         (_, result) => {
           resolve(result);
         },
@@ -120,7 +120,7 @@ export const createCharacter = (username, isMale) => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'INSERT INTO characters (username, gender, vitality, strength, intelligence) VALUES (?, ?, 5, 1, 1)',
+        'INSERT INTO characters (username, gender, vitality, strength, intelligence) VALUES (?, ?, 10, 2, 1)',
         [username, gender],
         (_, result) => {
           resolve(result);
@@ -150,14 +150,23 @@ export const getCharacter = () => {
   });
 };
 
-export const getEnemy = () => {
+export const getEnemy = (level = 1) => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT * FROM combatEnemy LIMIT 1',
         [],
         (_, result) => {
-          resolve(result.rows._array[0]);
+          if (result.rows.length > 0) {
+            resolve(result.rows._array[0]);
+          } else {
+            // If there's no data in the combatEnemy table, return the initial enemy data
+            const initialLevel = 1;
+            resolve({
+              id: 1,
+              level: initialLevel,
+            });
+          }
         },
         (_, error) => {
           reject(error);
@@ -213,6 +222,23 @@ export const getUnfinishedLevel = () => {
           } else {
             resolve(null); // All levels are completed
           }
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+export const updateCombatEnemy = (level) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'UPDATE combatEnemy SET level = ?',
+        [level],
+        (_, result) => {
+          resolve(result);
         },
         (_, error) => {
           reject(error);
