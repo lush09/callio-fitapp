@@ -24,6 +24,7 @@ export const initializeDatabase = () => {
 
     const initialLevel = 1;
 
+    // Add missing columns if they don't exist
     tx.executeSql(
       `SELECT * FROM pragma_table_info('characters') WHERE name='height';`,
       [],
