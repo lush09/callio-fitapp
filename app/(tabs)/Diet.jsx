@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Button, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
-import { updateCharacterDetails, getCharacter } from '../Database/database';
+import { updateCharacterDetails, getCharacter } from '../../Database/database';
 
 const RadioButton = ({ label, value, isSelected, onPress }) => (
   <TouchableOpacity
@@ -24,9 +24,9 @@ const DietPage = () => {
   const [showResult, setShowResult] = useState(false);
 
   const [fontsLoaded] = useFonts({
-    'Poppins-Light': require('../assets/Font/Poppins-Light.ttf'),
-    'Poppins-Bold': require('../assets/Font/Poppins-Light.ttf'),
-    'Poppins-Black': require('../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Light': require('../../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Bold': require('../../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Black': require('../../assets/Font/Poppins-Light.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -70,7 +70,7 @@ const DietPage = () => {
   const isButtonDisabled = !height || !weight || !age;
 
   return (
-    <View style={styles.dietContainer}>
+    <View style={styles.dietContainer} className=" pt-20">
       <Text style={styles.dietText}>CALORIE INTAKE</Text>
       <Text style={styles.dietTextBold}>CALCULATOR</Text>
       <TextInput
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
   dietContainer: {
     backgroundColor: '#16191F',
     padding: 20,
+    height: '100%'
   },
   dietText: {
     fontSize: 24,

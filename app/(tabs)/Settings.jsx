@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { getCharacter } from '../Database/database';
+import { getCharacter } from '../../Database/database';
 
 const SettingsPage = () => {
   const [username, setUsername] = useState('');
@@ -23,7 +23,7 @@ const SettingsPage = () => {
   }, []);
 
   return (
-    <View style={styles.settingsBody}>
+    <View style={styles.settingsBody} className=" pt-20">
       <Text style={styles.settingsText}>Settings Page</Text>
       {username && gender && (
         <Text style={styles.settingsText}>
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   settingsBody: {
     padding: 10,
     backgroundColor: '#16191F',
+    height: '100%'
   },
   settingsText: {
     color: '#FFFFFF',

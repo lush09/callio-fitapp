@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import RockPaperScissors from './RPSGame';
+import RockPaperScissors from '../../Components/RPSGame';
 import { useFonts } from 'expo-font';
-import { getCharacter } from '../Database/database';
+import { getCharacter } from '../../Database/database';
 
 const FightPage = () => {
   const [username, setUsername] = useState('');
 
   const [fontsLoaded] = useFonts({
-    'Poppins-Light': require('../assets/Font/Poppins-Light.ttf'),
-    'Poppins-Bold': require('../assets/Font/Poppins-Light.ttf'),
-    'Poppins-Black': require('../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Light': require('../../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Bold': require('../../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Black': require('../../assets/Font/Poppins-Light.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -33,7 +33,7 @@ const FightPage = () => {
   }, []);
 
   return (
-    <View style={styles.fightBody}>
+    <View style={styles.fightBody} className=" pt-20">
       <View style={styles.fightHeader}>
         {username && (
           <Text style={styles.fightText}>
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   fightBody: {
     padding: 10,
     backgroundColor: '#16191F',
+    height: '100%'
   },
   fightHeader: {
     flexDirection: 'row',

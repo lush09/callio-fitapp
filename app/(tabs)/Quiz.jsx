@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import { StyleSheet, View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
-import { getUnfinishedLevel, markLevelCompleted } from '../Database/database';
+import { getUnfinishedLevel, markLevelCompleted } from '../../Database/database';
 
 const QuizPage = () => {
   const [userInput, setUserInput] = useState([]);
@@ -12,9 +12,9 @@ const QuizPage = () => {
   const [currentLevel, setCurrentLevel] = useState(1);
 
   const [fontsLoaded] = useFonts({
-    'Poppins-Light': require('../assets/Font/Poppins-Light.ttf'),
-    'Poppins-Bold': require('../assets/Font/Poppins-Light.ttf'),
-    'Poppins-Black': require('../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Light': require('../../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Bold': require('../../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Black': require('../../assets/Font/Poppins-Light.ttf'),
   });
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const QuizPage = () => {
   };
 
   return (
-    <View style={styles.quizBody}>
+    <View style={styles.quizBody} className=" pt-20">
       <Text style={styles.quizHeader}>Level {currentLevel}</Text>
       {hints.map((hint, index) => (
         <Text key={index} style={styles.hintText}>
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
   quizBody: {
     padding: 10,
     backgroundColor: '#16191F',
+    height: '100%'
   },
   quizHeader:{
     color: '#FFF',
