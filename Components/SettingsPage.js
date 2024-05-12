@@ -5,6 +5,9 @@ import { getCharacter } from '../Database/database';
 const SettingsPage = () => {
   const [username, setUsername] = useState('');
   const [gender, setGender] = useState('');
+  const [vitality, setVitality] = useState(0);
+  const [strength, setStrength] = useState(0);
+  const [intelligence, setIntelligence] = useState(0);
 
   useEffect(() => {
     const fetchCharacter = async () => {
@@ -13,6 +16,9 @@ const SettingsPage = () => {
         if (character) {
           setUsername(character.username);
           setGender(character.gender);
+          setVitality(character.vitality);
+          setStrength(character.strength);
+          setIntelligence(character.intelligence);
         }
       } catch (error) {
         console.error('Error fetching character:', error);
@@ -26,9 +32,14 @@ const SettingsPage = () => {
     <View style={styles.settingsBody}>
       <Text style={styles.settingsText}>Settings Page</Text>
       {username && gender && (
-        <Text style={styles.settingsText}>
-          Welcome, {username} ({gender})!
-        </Text>
+        <View>
+          <Text style={styles.settingsText}>
+            Welcome, {username} ({gender})!
+          </Text>
+          <Text style={styles.settingsText}>Vitality: {vitality}</Text>
+          <Text style={styles.settingsText}>Strength: {strength}</Text>
+          <Text style={styles.settingsText}>Intelligence: {intelligence}</Text>
+        </View>
       )}
     </View>
   );

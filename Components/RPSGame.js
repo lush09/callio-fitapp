@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { getCharacter, getEnemy } from '../Database/database';
+import { View, Text, Image, Alert, TouchableOpacity, StyleSheet } from 'react-native';
+import { getCharacter, getEnemy, updateCombatEnemy } from '../Database/database';
 import idleFight from '../assets/FightPage/idle.gif';
 import userPunch from '../assets/FightPage/userpunch.gif';
 import enemyPunch from '../assets/FightPage/enemypunch.gif';
@@ -16,12 +16,15 @@ const RockPaperScissors = () => {
   const [enemyHP, setEnemyHP] = useState(0);
   const [enemyMaxHP, setEnemyMaxHP] = useState(0);
   const [enemyStrength, setEnemyStrength] = useState(0);
+  const [enemyIntelligence, setEnemyIntelligence] = useState(0);
   const [playerHP, setPlayerHP] = useState(0);
   const [playerMaxHP, setPlayerMaxHP] = useState(0);
   const [playerStrength, setPlayerStrength] = useState(0);
+  const [playerIntelligence, setPlayerIntelligence] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState(null);
   const [fightAnimation, setFightAnimation] = useState(idleFight);
+  const [enemyLevel, setEnemyLevel] = useState(0);
 
   useEffect(() => {
     const fetchCharacterData = async () => {
@@ -29,20 +32,23 @@ const RockPaperScissors = () => {
       setPlayerHP(character.vitality);
       setPlayerMaxHP(character.vitality);
       setPlayerStrength(character.strength);
+      setPlayerIntelligence(character.intelligence);
     };
 
     const fetchEnemyData = async () => {
       const enemy = await getEnemy();
-      setEnemyHP(enemy.vitality);
-      setEnemyMaxHP(enemy.vitality);
-      setEnemyStrength(enemy.strength);
+      setEnemyHP(enemy.level * 5);
+      setEnemyMaxHP(enemy.level * 5);
+      setEnemyStrength(enemy.level + 1);
+      setEnemyIntelligence(enemy.level);
+      setEnemyLevel(enemy.level);
     };
 
     fetchCharacterData();
     fetchEnemyData();
   }, []);
 
-  const handlePlayerChoice = (choice) => {
+  const handlePlayerChoice = async (choice) => {
     setPlayerChoice(choice);
     const enemyOptions = ['rock', 'paper', 'scissors'];
     const randomIndex = Math.floor(Math.random() * enemyOptions.length);
@@ -53,11 +59,45 @@ const RockPaperScissors = () => {
     setResult(result);
 
     if (result === 'player') {
-      setEnemyHP(enemyHP - playerStrength);
+      const playerDamage = calculateDamage(playerStrength, enemyIntelligence, true);
+      const newEnemyHP = enemyHP - playerDamage;
+      setEnemyHP(newEnemyHP);
       setFightAnimation(userPunch);
+
+      if (newEnemyHP <= 0) {
+        Alert.alert(
+          'Congratulations',
+          'Proceed to the next level?',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: async () => {
+                const newLevel = enemyLevel + 1;
+                setEnemyLevel(newLevel);
+                // Save updated enemy stats to the database
+                await updateEnemyStats(newLevel);
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      }
     } else if (result === 'enemy') {
-      setPlayerHP(playerHP - enemyStrength);
+      const enemyDamage = calculateDamage(enemyStrength, enemyIntelligence, false);
+      const newPlayerHP = playerHP - enemyDamage;
+      setPlayerHP(newPlayerHP);
       setFightAnimation(enemyPunch);
+
+      if (newPlayerHP <= 0) {
+        // Player defeated
+        alert('Grow stronger and try again!');
+        setPlayerHP(playerMaxHP); // Reset player HP to max
+        setEnemyHP(enemyMaxHP); // Reset enemy HP to max
+      }
     }
 
     setShowResult(true);
@@ -65,6 +105,22 @@ const RockPaperScissors = () => {
       setShowResult(false);
       setFightAnimation(idleFight);
     }, 2200);
+  };
+
+  const calculateDamage = (strength, intelligence, isPlayer) => {
+    const critChance = 0.20; // 20% chance for a critical hit
+    let damage = strength;
+
+    // Check for a critical hit
+    if (Math.random() <= critChance) {
+      if (isPlayer) {
+        damage += playerIntelligence;
+      } else {
+        damage += intelligence;
+      }
+    }
+
+    return damage;
   };
 
   const determineWinner = (player, enemy) => {
@@ -105,6 +161,14 @@ const RockPaperScissors = () => {
       return 'red';
     } else {
       return '#FEEFAD';
+    }
+  };
+
+  const updateEnemyStats = async (level) => {
+    try {
+      await updateCombatEnemy(level);
+    } catch (error) {
+      console.error('Error updating enemy stats:', error);
     }
   };
 
@@ -199,4 +263,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RockPaperScissors;
+export default RockPaperScissors; 

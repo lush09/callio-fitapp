@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import { StyleSheet, View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
-import { getUnfinishedLevel, markLevelCompleted } from '../Database/database';
+import { getUnfinishedLevel, markLevelCompleted, getCharacter, updateCharacterDetails } from '../Database/database';
 
 const QuizPage = () => {
   const [userInput, setUserInput] = useState([]);
@@ -77,7 +77,7 @@ const QuizPage = () => {
     const joined = userInput.join('');
     if (joined === answer) {
       Alert.alert('Correct!', 'You guessed the answer correctly!', [
-        { text: 'Next Level', onPress: handleNextLevel },
+        { text: 'Next Level', onPress: handleIntelligenceIncrementAndNextLevel },
       ]);
     } else if (joined.length === answer.length && joined !== answer) {
       if (lives > 1) {
@@ -89,6 +89,23 @@ const QuizPage = () => {
           { text: 'Next Level', onPress: handleNextLevel },
         ]);
       }
+    }
+  };
+
+  const handleIntelligenceIncrementAndNextLevel = async () => {
+    try {
+      const character = await getCharacter();
+      const updatedIntelligence = character.intelligence + 1;
+      await updateCharacterDetails(
+        character.height,
+        character.weight,
+        character.age,
+        character.activity,
+        updatedIntelligence
+      );
+      await handleNextLevel();
+    } catch (error) {
+      console.error('Error incrementing intelligence:', error);
     }
   };
 
