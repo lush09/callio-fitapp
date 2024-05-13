@@ -24,9 +24,9 @@ const DietPage = () => {
   const [showResult, setShowResult] = useState(false);
 
   const [fontsLoaded] = useFonts({
-    'Poppins-Light': require('../../assets/Font/Poppins-Light.ttf'),
-    'Poppins-Bold': require('../../assets/Font/Poppins-Light.ttf'),
-    'Poppins-Black': require('../../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Light': require('../../assets/font/Poppins-Light.ttf'),
+    'Poppins-Bold': require('../../assets/font/Poppins-Light.ttf'),
+    'Poppins-Black': require('../../assets/font/Poppins-Light.ttf'),
   });
 
   if (!fontsLoaded) {
