@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity,SafeAreaView } from 'react-native';
 import WorkoutPage from './(tabs)/Workout.jsx';
@@ -62,8 +61,16 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       {characterCreated ? (
         <>
-          <View style={styles.main}>
-            <Link href="/Workout"><Text style={styles.main}>Login</Text></Link>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>CALLIO</Text>
+          </View>
+          <View style={styles.pageContainer}>{renderPage()}</View>
+          <View style={styles.footer}>
+            <Link href="/WorkoutPage" style={styles.footerIcon}><Image source={WorkoutIcon} style={styles.footerImg}/></Link>
+            <Link href="/DietPage" style={styles.footerIcon}><Image source={DietIcon} style={styles.footerImg}/></Link>
+            <Link href="/QuizPage" style={styles.footerIcon}><Image source={QuizIcon} style={styles.footerImg}/></Link>
+            <Link href="/FightPage" style={styles.footerIcon}><Image source={FightIcon} style={styles.footerImg}/></Link>
+            <Link href="/SettingsPage" style={styles.footerIcon}><Image source={ProfileIcon} style={styles.footerImg}/></Link>
           </View>
         </>
       ) : (
@@ -74,14 +81,6 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 20,
-   },
   container: {
     flex: 1,
     backgroundColor: '#16191F',
