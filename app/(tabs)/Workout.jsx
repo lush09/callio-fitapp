@@ -30,7 +30,7 @@ const WorkoutPage = () => {
           <Link href="/UpperBody" style={styles.btn1} className="py-6 bottom-4">
             <Image source={UpperBody} style={styles.btnImage}/>
           </Link>
-          <Link href="/ArmPage" style={styles.btn2} className="py-6 top-14">
+          <Link href="/Arm" style={styles.btn2} className="py-6 top-14">
             <Image source={Arm} style={styles.btnImage}/>
           </Link>
           <Link href="/LowerBody" style={styles.btn3} className="py-6 top-[140px]">

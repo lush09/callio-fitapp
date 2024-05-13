@@ -79,6 +79,24 @@ const TabsLayout = () => {
                     icon={ProfileIcon}
                     name="Settings"/>
             )}}/>
+            <Tabs.Screen 
+            name='(workout)/Arm' 
+            options={{
+                headerShown:false,
+                href: null,
+            }}/>
+            <Tabs.Screen 
+            name='(workout)/UpperBody' 
+            options={{
+                headerShown:false,
+                href: null,
+            }}/>
+            <Tabs.Screen 
+            name='(workout)/LowerBody' 
+            options={{
+                headerShown:false,
+                href: null,
+            }}/>
         </Tabs>
     </>
   )
