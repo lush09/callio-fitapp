@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
-import { StyleSheet, View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
+import { StatusBar, StyleSheet, View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { getUnfinishedLevel, markLevelCompleted } from '../../Database/database';
 
 const QuizPage = () => {
@@ -122,7 +122,7 @@ const QuizPage = () => {
 
 const styles = StyleSheet.create({
   quizBody: {
-    padding: 10,
+    paddingTop: StatusBar.currentHeight,
     backgroundColor: '#16191F',
     height: '100%'
   },

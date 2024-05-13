@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StatusBar,StyleSheet, View, Text } from 'react-native';
 import RockPaperScissors from '../../Components/RPSGame';
 import { useFonts } from 'expo-font';
 import { getCharacter, getEnemy } from '../../Database/database';
@@ -57,7 +57,7 @@ const FightPage = () => {
 
 const styles = StyleSheet.create({
   fightBody: {
-    padding: 10,
+    paddingTop: StatusBar.currentHeight,
     backgroundColor: '#16191F',
     height: '100%',
   },

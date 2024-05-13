@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Button, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StatusBar, StyleSheet, View, Button, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import { updateCharacterDetails, getCharacter } from '../../Database/database';
 
@@ -153,7 +153,7 @@ const DietPage = () => {
 const styles = StyleSheet.create({
   dietContainer: {
     backgroundColor: '#16191F',
-    padding: 20,
+    paddingTop: StatusBar.currentHeight,
     height: '100%'
   },
   dietText: {
