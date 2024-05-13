@@ -6,12 +6,13 @@ import Arm from '../../assets/Buttons/arm.png';
 import LowerBody from '../../assets/Buttons/lowerbody.png';
 import UpperBody from '../../assets/Buttons/upperbody.png';
 import { useFonts } from 'expo-font';
+import { Link } from 'expo-router';
 
 var screenWidth = Dimensions.get('window').width;
 var width = screenWidth * .6;
 var btnWidth = screenWidth * .4;
 
-const WorkoutBody = () => {
+const WorkoutPage = () => {
   
   const [fontsLoaded] = useFonts({
     'Poppins-Light': require('../../assets/Font/Poppins-Light.ttf'),
@@ -20,47 +21,25 @@ const WorkoutBody = () => {
   });
 
   return (
-    <View className=" pt-20">
+    <View className=" pt-20" style={styles.workoutBody}>
       <Text style={styles.heading}>Pick a body part to work on:</Text>
       <View style={styles.workoutContainer}>
         <Image source={Avatar} style={styles.avatar}/>
         <Image source={Arrow} style={styles.arrow}/>
         <View style={styles.textArea}>
-          <TouchableOpacity onPress={() => setselectVisible(false)} style={styles.btn1}>
+          <Link href="/UpperBody" style={styles.btn1} className="py-6 bottom-4">
             <Image source={UpperBody} style={styles.btnImage}/>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn2}>
+          </Link>
+          <Link href="/ArmPage" style={styles.btn2} className="py-6 top-14">
             <Image source={Arm} style={styles.btnImage}/>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn3}>
+          </Link>
+          <Link href="/LowerBody" style={styles.btn3} className="py-6 top-[140px]">
             <Image source={LowerBody} style={styles.btnImage}/>
-          </TouchableOpacity>
+          </Link>
         </View>
       </View>
     </View>
   )
-}
-
-const WorkoutPage = () => {
-  const [activePage, setActivePage] = useState('Workouts');
-
-  const renderPage = () => {
-    switch (activePage) {
-      case 'UpperBody':
-        return <WorkoutPage />;
-      case 'Arm':
-        return <DietPage />;
-      case 'LowerBody':
-        return <DietPage />;
-      default:
-        return <WorkoutBody />;
-    }
-  };
-  return (
-    <View style={styles.workoutBody}>
-        {renderPage()}
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
@@ -105,15 +84,6 @@ const styles = StyleSheet.create({
     padding: 10,
     fontFamily: 'Poppins-Bold',
     color: '#ffffff',
-  },
-  btn1: {
-    top:'6%'
-  },
-  btn2: {
-    top:'26%'
-  },
-  btn3: {
-    top:'47%'
   },
   btnImage: {
     width:btnWidth,

@@ -5,7 +5,7 @@ import { Slot, Stack } from 'expo-router'
 const RootLayout = () => {
   return (
     <>
-    <Slot/>
+    <Slot className=" mt-20"/>
     </>
   )
 }

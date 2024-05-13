@@ -39,7 +39,7 @@ const FightPage = () => {
   }, []);
 
   return (
-    <View style={styles.fightBody}>
+    <View style={styles.fightBody} className=" pt-20">
       <View style={styles.fightHeader}>
         {username && (
           <Text style={styles.fightText}>
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   fightBody: {
     padding: 10,
     backgroundColor: '#16191F',
+    height: '100%',
   },
   fightHeader: {
     flexDirection: 'row',
