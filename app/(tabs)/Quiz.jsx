@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
-import { StyleSheet, View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
+import { StatusBar, StyleSheet, View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { getUnfinishedLevel, markLevelCompleted } from '../../Database/database';
 
 const QuizPage = () => {
@@ -12,9 +12,9 @@ const QuizPage = () => {
   const [currentLevel, setCurrentLevel] = useState(1);
 
   const [fontsLoaded] = useFonts({
-    'Poppins-Light': require('../../assets/Font/Poppins-Light.ttf'),
-    'Poppins-Bold': require('../../assets/Font/Poppins-Light.ttf'),
-    'Poppins-Black': require('../../assets/Font/Poppins-Light.ttf'),
+    'Poppins-Light': require('../../assets/font/Poppins-Light.ttf'),
+    'Poppins-Bold': require('../../assets/font/Poppins-Light.ttf'),
+    'Poppins-Black': require('../../assets/font/Poppins-Light.ttf'),
   });
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const QuizPage = () => {
 
 const styles = StyleSheet.create({
   quizBody: {
-    padding: 10,
+    paddingTop: StatusBar.currentHeight,
     backgroundColor: '#16191F',
     height: '100%'
   },

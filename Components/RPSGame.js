@@ -11,6 +11,7 @@ import scissorIcon from '../assets/FightPage/scissors.png';
 import HealthBar from './Healthbar';
 
 const RockPaperScissors = () => {
+  const [username, setUsername] = useState('');
   const [playerChoice, setPlayerChoice] = useState(null);
   const [enemyChoice, setEnemyChoice] = useState(null);
   const [enemyHP, setEnemyHP] = useState(0);
@@ -79,7 +80,23 @@ const RockPaperScissors = () => {
                 const newLevel = enemyLevel + 1;
                 setEnemyLevel(newLevel);
                 // Save updated enemy stats to the database
-                await updateEnemyStats(newLevel);
+                updateEnemyStats(newLevel);
+                try {
+                  const character = getCharacter();
+                  if (character) {
+                    setUsername(character.username);
+                  }
+            
+                  const enemy = getEnemy();
+                  if (enemy) {
+                    setEnemyLevel(enemy.level);
+                  }
+                } catch (error) {
+                  console.error('Error fetching data:', error);
+                }
+                setEnemyLevel(newLevel);
+                setPlayerHP(playerMaxHP); // Reset player HP to max
+                setEnemyHP(enemyMaxHP); // Reset enemy HP to max
               },
             },
           ],

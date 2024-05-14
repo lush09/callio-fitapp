@@ -1,20 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, Text, View, TouchableOpacity,SafeAreaView } from 'react-native';
-import WorkoutPage from './(tabs)/Workout.jsx';
-import DietPage from './(tabs)/Diet.jsx';
-import QuizPage from './(tabs)/Quiz.jsx';
-import FightPage from './(tabs)/Fight.jsx';
-import SettingsPage from './(tabs)/Settings.jsx';
+import { StatusBar,StyleSheet, Image, Text, View, TouchableOpacity,SafeAreaView } from 'react-native';
 import CharCreate from './CharCreate.js';
 import { initializeDatabase, getCharacter } from '../Database/database.js';
-import WorkoutIcon from '../assets/App-Icons/workout.png';
-import DietIcon from '../assets/App-Icons/diet.png';
-import QuizIcon from '../assets/App-Icons/quiz.png';
-import FightIcon from '../assets/App-Icons/fight.png';
-import ProfileIcon from '../assets/App-Icons/profile.png';
-import { useFonts } from 'expo-font';
 import { Link } from 'expo-router';
+import Logo from '../assets/logo.png'
 
 export default function App() {
   const [activePage, setActivePage] = useState('Workouts');
@@ -41,29 +31,17 @@ export default function App() {
     setCharacterCreated(true);
   };
 
-  const renderPage = () => {
-    switch (activePage) {
-      case 'Workouts':
-        return <WorkoutPage />;
-      case 'Stats':
-        return <DietPage />;
-      case 'Quiz':
-        return <QuizPage />;
-      case 'Fight':
-        return <FightPage />;
-      case 'Settings':
-        return <SettingsPage />;
-      default:
-        return <WorkoutPage />;
-    }
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       {characterCreated ? (
         <>
-          <View style={styles.main}>
-            <Link href="/Workout"><Text style={styles.main}>Login</Text></Link>
+          <View style={styles.main} className='h-full w-full justify-center'>
+            <View className='flex-col text-white content-center'>
+              <Text className='text-white font-plight text-2xl'>Let's</Text>
+              <Text className='text-white font-pblack text-3xl'>Play & Improve!</Text>
+              <Image source={Logo} style={styles.logo} className=' h-72 w-72'/>
+              <Link href="/Workout"><Text className='text-4xl font-pblack text-white'>Start</Text></Link>
+            </View>
           </View>
         </>
       ) : (
@@ -75,45 +53,10 @@ export default function App() {
 
 const styles = StyleSheet.create({
   main: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 20,
+    paddingTop: StatusBar.currentHeight,
    },
   container: {
     flex: 1,
     backgroundColor: '#16191F',
-  },
-  header: {
-    backgroundColor: '#16191F',
-    paddingHorizontal: 25,
-    paddingTop: 10,
-  },
-  headerText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 70,
-    paddingVertical: 10,
-    backgroundColor: '#080911',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  footerIcon: {
-    height: 48
-  },
-  footerImg: {
-    width: 28, 
-    height: 28, 
-    tintColor: '#FFFFFF', 
   },
 });
