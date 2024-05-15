@@ -36,20 +36,10 @@ const FightPage = () => {
     };
   
     fetchData();
-  }, enemyLevel);
+  },[]);
 
   return (
     <View style={styles.fightBody} className=" pt-20">
-      <View style={styles.fightHeader}>
-        {username && (
-          <Text style={styles.fightText}>
-            {username}
-          </Text>
-        )}
-        <Text style={styles.fightText}>
-          LEVEL {enemyLevel !== null ? enemyLevel : ''}
-        </Text>
-      </View>
       <RockPaperScissors />
     </View>
   );
@@ -60,16 +50,6 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
     backgroundColor: '#16191F',
     height: '100%',
-  },
-  fightHeader: {
-    flexDirection: 'row',
-    gap: 180,
-  },
-  fightText: {
-    color: '#FFFFFF',
-    fontFamily: 'Poppins-Light',
-    fontSize: 18,
-    marginBottom: 20,
   },
 });
 

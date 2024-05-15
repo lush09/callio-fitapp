@@ -30,6 +30,7 @@ const RockPaperScissors = () => {
   useEffect(() => {
     const fetchCharacterData = async () => {
       const character = await getCharacter();
+      setUsername(character.username);
       setPlayerHP(character.vitality);
       setPlayerMaxHP(character.vitality);
       setPlayerStrength(character.strength);
@@ -191,6 +192,14 @@ const RockPaperScissors = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.fightHeader}>
+          <Text style={styles.fightText}>
+            {username}
+          </Text>
+        <Text style={styles.fightText}>
+          LEVEL {enemyLevel !== null ? enemyLevel : ''}
+        </Text>
+      </View>
       <View style={styles.HPNumber}>
         <Text style={styles.text}>{playerHP}</Text>
         <Text style={styles.text}> {enemyHP}</Text>
@@ -239,7 +248,6 @@ const RockPaperScissors = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    justifyContent: 'flex-end',
     height: 610,
   },
   text: {
@@ -250,25 +258,36 @@ const styles = StyleSheet.create({
   HPNumber: {
     flexDirection: 'row',
     gap: 270,
-    bottom: 45,
     zIndex: 1,
   },
   HPBars: {
     flexDirection: 'row',
-    bottom: 100,
     borderWidth: 7,
     borderColor: '#FFC100',
+    top: -55,
   },
   fightAnimation: {
-    height: 380,
-    width: 340,
+    height: "80%",
+    width: "100%",
+  },
+  fightHeader: {
+    flexDirection: 'row',
+    gap: 180,
+  },
+  fightText: {
+    color: '#FFFFFF',
+    fontFamily: 'Poppins-Light',
+    fontSize: 18,
+    marginBottom: 20,
   },
   choicesContainer: {
     flexDirection: 'row',
+    justifyContent:'center',
+    width:"100%",
   },
   choice: {
     padding: 20,
-    width: 120,
+    width: "33.4%",
     borderWidth: 7,
     borderColor: '#FFC100',
   },
