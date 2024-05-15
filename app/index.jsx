@@ -34,16 +34,14 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       {characterCreated ? (
-        <>
-          <View style={styles.main} className='h-full w-full justify-center'>
-            <View className='flex-col text-white content-center'>
+          <View style={styles.main} className=' p-5 items-center justify-center'>
+            <View>
               <Text className='text-white font-plight text-2xl'>Let's</Text>
               <Text className='text-white font-pblack text-3xl'>Play & Improve!</Text>
-              <Image source={Logo} style={styles.logo} className=' h-72 w-72'/>
-              <Link href="/Workout"><Text className='text-4xl font-pblack text-white'>Start</Text></Link>
             </View>
+              <Image source={Logo} style={styles.logo} className=' h-72 w-80'/>
+              <Link href="/Workout"><Text className='text-4xl font-pblack text-white'> Click Here to Start!</Text></Link>
           </View>
-        </>
       ) : (
         <CharCreate onCharacterCreated={handleCharacterCreated} />
       )}
@@ -53,10 +51,11 @@ export default function App() {
 
 const styles = StyleSheet.create({
   main: {
+    flex: 1,
     paddingTop: StatusBar.currentHeight,
+    backgroundColor: '#16191F',
    },
   container: {
     flex: 1,
-    backgroundColor: '#16191F',
   },
 });

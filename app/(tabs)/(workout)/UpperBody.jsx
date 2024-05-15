@@ -1,33 +1,29 @@
-import { ScrollView,FlatList, StatusBar,StyleSheet, Text, View } from 'react-native'
+import { Image,FlatList, StatusBar,StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Item from "../../../Database/upperbodydata.json"
+import DATA from '../../../Database/upperbodydata.js'
+import workout from '../../../assets/App-Icons/workout.png'
 
 const UpperBody = () => {
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-  ];
-
-  const Item = ({title}) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
 
   return (
-    <View style={styles.main}>
+    <View style={styles.main} className=' p-5'>
       <Text className=' text-center text-3xl font-pblack text-white'>Upper Body Workouts</Text>
       <View>
+      <FlatList
+        data={DATA}
+        renderItem={({ item }) => (
+          <View className=' mt-10 p-5 border bg-slate-500 rounded-3xl flex-row items-center'>
+            <Image source={workout} className=' w-16 h-16'/>
+            <View className=' ml-5 flex-col flex-shrink'>
+              <Text className=' text-white text-xl font-pbold text-left'>{item.title}</Text>
+              <Text className=' text-white text-lg font-plight text-left'>Training Target:</Text>
+              <Text className=' text-white text-lg font-plight text-left'>{item.target}</Text>
+              <Text className=' text-green-300 text-lg font-plight text-left'>{item.goal}</Text>
+            </View>
+          </View>
+        )}
+        keyExtractor={item => item.id}
+      />
       </View>
     </View>
   )

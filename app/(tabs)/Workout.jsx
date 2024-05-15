@@ -26,7 +26,7 @@ const WorkoutPage = () => {
             <Link href="/UpperBody" style={styles.gap} className="py-7">
               <Image source={UpperBody} style={styles.btnImage}/>
             </Link>
-            <Link href="/Arm" style={styles.gap} className="py-8">
+            <Link href="/Arm" style={styles.gap2} className="py-8">
               <Image source={Arm} style={styles.btnImage}/>
             </Link>
             <Link href="/LowerBody" className="py-8">
@@ -95,6 +95,9 @@ const styles = StyleSheet.create({
   },
   gap: {
     marginBottom: screenHeight*.05
+  },
+  gap2: {
+    marginBottom: screenHeight*.06
   }
 });
 
