@@ -36,7 +36,7 @@ const FightPage = () => {
     };
   
     fetchData();
-  }, []);
+  }, enemyLevel);
 
   return (
     <View style={styles.fightBody} className=" pt-20">

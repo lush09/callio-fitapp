@@ -47,7 +47,7 @@ const RockPaperScissors = () => {
 
     fetchCharacterData();
     fetchEnemyData();
-  }, []);
+  }, [enemyLevel]);
 
   const handlePlayerChoice = async (choice) => {
     setPlayerChoice(choice);
@@ -240,7 +240,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'flex-end',
-    backgroundColor: '#000',
     height: 610,
   },
   text: {
