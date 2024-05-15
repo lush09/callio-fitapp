@@ -93,8 +93,9 @@ const QuizPage = () => {
   };
 
   return (
-    <View style={styles.quizBody} className=" pt-20">
-      <Text style={styles.quizHeader}>Level {currentLevel}</Text>
+    <View style={styles.quizBody} className=" p-5">
+      <Text className=' text-white text-3xl font-pblack'>Gymdle</Text>
+      <Text style={styles.quizHeader} className=' text-2xl font-plight mt-5'>Level {currentLevel}</Text>
       {hints.map((hint, index) => (
         <Text key={index} style={styles.hintText}>
           {hint}
@@ -128,8 +129,6 @@ const styles = StyleSheet.create({
   },
   quizHeader:{
     color: '#FFF',
-    fontFamily: 'Poppins-Black',
-    fontSize: 40,
     alignSelf: 'center',
   },
   inputContainer: {

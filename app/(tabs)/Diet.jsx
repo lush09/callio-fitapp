@@ -70,36 +70,39 @@ const DietPage = () => {
   const isButtonDisabled = !height || !weight || !age;
 
   return (
-    <View style={styles.dietContainer} className=" pt-20">
+    <View style={styles.dietContainer} className=" p-5">
       <Text style={styles.dietText}>CALORIE INTAKE</Text>
       <Text style={styles.dietTextBold}>CALCULATOR</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Height(CM)"
-        placeholderTextColor={'#808080'}
-        color={'#fff'}
-        keyboardType="numeric"
-        value={height}
-        onChangeText={setHeight}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Weight(KG)"
-        placeholderTextColor={'#808080'}
-        color={'#fff'}
-        keyboardType="numeric"
-        value={weight}
-        onChangeText={setWeight}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Age"
-        placeholderTextColor={'#808080'}
-        color={'#fff'}
-        keyboardType="numeric"
-        value={age}
-        onChangeText={setAge}
-      />
+      <View>
+        <TextInput
+          style={styles.input}
+          placeholder="Height(CM)"
+          placeholderTextColor={'#808080'}
+          color={'#fff'}
+          keyboardType="numeric"
+          value={height}
+          onChangeText={setHeight}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Weight(KG)"
+          placeholderTextColor={'#808080'}
+          color={'#fff'}
+          keyboardType="numeric"
+          value={weight}
+          onChangeText={setWeight}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Age"
+          placeholderTextColor={'#808080'}
+          color={'#fff'}
+          keyboardType="numeric"
+          value={age}
+          onChangeText={setAge}
+        />
+      </View>
+      
       <View style={styles.activityLevelContainer}>
         <Text style={styles.activityLevelText}>Activity Level</Text>
         <RadioButton

@@ -39,7 +39,8 @@ const FightPage = () => {
   },[]);
 
   return (
-    <View style={styles.fightBody} className=" pt-20">
+    <View style={styles.fightBody} className=" p-5">
+      <Text className=" text-white font-pblack text-3xl">Rock Paper Scissor Box!</Text>
       <RockPaperScissors />
     </View>
   );

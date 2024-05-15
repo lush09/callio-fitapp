@@ -200,14 +200,17 @@ const RockPaperScissors = () => {
           LEVEL {enemyLevel !== null ? enemyLevel : ''}
         </Text>
       </View>
-      <View style={styles.HPNumber}>
-        <Text style={styles.text}>{playerHP}</Text>
-        <Text style={styles.text}> {enemyHP}</Text>
+      <View style={styles.hp}>
+        <View style={styles.HPNumber}>
+          <Text style={styles.text}>{playerHP}</Text>
+          <Text style={styles.text}> {enemyHP}</Text>
+        </View>
+        <View style={styles.HPBars}>
+          <HealthBar percentage={playerHP / playerMaxHP} />
+          <HealthBar percentage={enemyHP / enemyMaxHP} fillerColor="red" />
+        </View>
       </View>
-      <View style={styles.HPBars}>
-        <HealthBar percentage={playerHP / playerMaxHP} />
-        <HealthBar percentage={enemyHP / enemyMaxHP} fillerColor="red" />
-      </View>
+      
       <Image source={fightAnimation} style={styles.fightAnimation} />
       <View style={styles.choicesContainer}>
         <TouchableOpacity
@@ -250,6 +253,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 610,
   },
+  hp: {
+    alignItems: 'center',
+    bottom:'-1%'
+  },
   text: {
     color: '#FFFFFF',
     fontSize: 18,
@@ -269,10 +276,12 @@ const styles = StyleSheet.create({
   fightAnimation: {
     height: "80%",
     width: "100%",
+    bottom:'5%'
   },
   fightHeader: {
     flexDirection: 'row',
     gap: 180,
+    bottom: '-5%'
   },
   fightText: {
     color: '#FFFFFF',
@@ -284,6 +293,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent:'center',
     width:"100%",
+    bottom:'3%'
   },
   choice: {
     padding: 20,
