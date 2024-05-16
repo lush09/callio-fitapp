@@ -16,6 +16,7 @@ const SettingsPage = () => {
   const [isWorkout, setIsWorkout] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [changeNameVisible, setChangeNameVisible] = useState(false);
+  const [deleteAccountVisible, setDeleteAccountVisible] = useState(false);
 
   useEffect(() => {
     const fetchCharacter = async () => {
@@ -51,7 +52,7 @@ const SettingsPage = () => {
             Account
           </Text>
           <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             visible={changeNameVisible}
             onRequestClose={() => {
@@ -60,67 +61,85 @@ const SettingsPage = () => {
             }}
             className=' absolute'
             >
-              <View className=' bg-slate-600 m-5 top-1/2 rounded-3xl'>
-                <View className='m-5'>
-                  <TextInput
-                    style={styles.input}
+              <View className = ' h-screen w-screen absolute bg-black opacity-50'></View>
+              <View className=' bg-slate-600 m-5 top-1/3 rounded-3xl border-4 border-orange-300'>
+                <View className='m-3'>
+                  <View 
+                    className=' border-b text-lg font-plight pt-5 mx-2 border-white rounded-lg'>
+                    <TextInput
                     placeholder="Username"
                     placeholderTextColor={"#808080"}
                     color={"#fff"}
                     value={newUsername}
                     onChangeText={setNewUsername}
-                  />
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress = { async () => {
-                      setChangeNameVisible(!changeNameVisible)
-                      await updateCharacterName(newUsername)
-                      setUsername(newUsername)
-                      setNewUsername('')
-                    }}>
-                    <Text style={styles.textStyle}>Confirm</Text>
-                  </Pressable>
+                    className='text-lg font-plight mx-3'
+                    />
+                  </View>
+                  <View className=' flex-row gap-10 justify-end pt-5'>
+                    <Pressable
+                      onPress = { async () => {
+                        setChangeNameVisible(!changeNameVisible)
+                        await updateCharacterName(newUsername)
+                        setUsername(newUsername)
+                        setNewUsername('')
+                      }}>
+                      <Text className=' text-lg font-pbold text-green-400'>Confirm</Text>
+                    </Pressable>
+                    <Pressable
+                      onPress = { async () => {
+                        setChangeNameVisible(!changeNameVisible)
+                        setNewUsername('')
+                      }}>
+                      <Text className=' text-lg font-pbold text-red-400'>Cancel</Text>
+                    </Pressable>
+                  </View>
+                  
                 </View>
               </View>
-            
+          </Modal>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={deleteAccountVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setDeleteAccountVisible(!deleteAccountVisible);
+            }}
+            className=' absolute'
+            >
+              <View className = ' h-screen w-screen absolute bg-black opacity-50'></View>
+              <View className=' bg-slate-600 m-5 top-1/3 rounded-3xl border-4 border-orange-300'>
+                <View className='m-3'>
+                  <View className=' mt-3'>
+                    <Text className=' text-white text-lg font-plight'>Are you sure you want to delete your account? This action is irreversible.</Text>
+                  </View>
+                  <View className=' flex-row gap-10 justify-end pt-5'>
+                    <Pressable
+                      onPress = { async () => {
+                        setDeleteAccountVisible(!deleteAccountVisible)
+                        await resetDatabase()
+                        router.replace('/')
+                      }}>
+                      <Text className=' text-lg font-pbold text-red-400'>Delete</Text>
+                    </Pressable>
+                    <Pressable
+                      onPress = { async () => {
+                        setDeleteAccountVisible(!deleteAccountVisible)
+                      }}>
+                      <Text className=' text-lg font-pbold text-gray-400'>Cancel</Text>
+                    </Pressable>
+                  </View>
+                  
+                </View>
+              </View>
           </Modal>
           <View className=' bg-white py-2 px-10 rounded-3xl'>
-          <Pressable 
+            <Pressable 
               onPress={() => setChangeNameVisible(!changeNameVisible)}>
                 <Text className=' text-lg font-plight py-2 border-double border-gray-300 border-b'>Change Username</Text>
             </Pressable>
-            <Text className=' text-lg font-plight py-2 border-double border-gray-300 border-b'>Edit Profile</Text>
             <Pressable 
-              onPress={() => {
-                Alert.alert(
-                  'Delete Account',
-                  'Do you want to delete your account? (This is irreversible.)',
-                  [
-                    {
-                      text: 'Cancel',
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'Yes',
-                      onPress: async () => {
-                        try {
-                          await resetDatabase();
-                        } catch (error) {
-                          console.error('Error deleting account:', error);
-                        }
-                        router.replace('/')
-                      },
-                      style: 'destructive'
-                    },
-                  ],
-                  { cancelable: false }
-                );
-              }}
-              style={({pressed}) => [
-                {
-                  color: pressed ? 'rgb(210, 230, 255)' : 'white',
-                }
-              ]}>
+              onPress={() => setDeleteAccountVisible(!deleteAccountVisible)}>
                 <Text className=' text-lg font-plight py-2'>Delete Account</Text>
             </Pressable>
           </View>
@@ -138,7 +157,7 @@ const SettingsPage = () => {
                 Workout Activity
               </Text>
               <Text className=' text-lg w-2/3 font-plight my-[10]'>
-                Email Notification
+                Reminder
               </Text>
             </View>
             <View>
