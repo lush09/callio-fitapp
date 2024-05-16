@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import { StatusBar, StyleSheet, View, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
-import { getUnfinishedLevel, markLevelCompleted } from '../../Database/database';
+import { getUnfinishedLevel, markLevelCompleted, getCharacter, updateCharacterDetails } from '../../Database/database';
 
 const QuizPage = () => {
   const [userInput, setUserInput] = useState([]);
@@ -10,6 +10,7 @@ const QuizPage = () => {
   const [hints, setHints] = useState(['']);
   const [gameOver, setGameOver] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(1);
+  const [intelligence, setIntelligence] = useState(0);
 
   const [fontsLoaded] = useFonts({
     'Poppins-Light': require('../../assets/font/Poppins-Light.ttf'),
@@ -19,7 +20,19 @@ const QuizPage = () => {
 
   useEffect(() => {
     fetchUnfinishedLevel();
+    fetchCharacterData();
   }, []);
+
+  const fetchCharacterData = async () => {
+    try {
+      const character = await getCharacter();
+      if (character) {
+        setIntelligence(character.intelligence);
+      }
+    } catch (error) {
+      console.error('Error fetching character data:', error);
+    }
+  };
 
   const fetchUnfinishedLevel = async () => {
     try {
@@ -54,6 +67,10 @@ const QuizPage = () => {
         setAnswer(nextLevelData.word);
         setHints([nextLevelData.hint1, nextLevelData.hint2, nextLevelData.hint3]);
         setUserInput(Array(nextLevelData.word.length).fill(''));
+        // add intelligence when successful
+        const updatedIntelligence = intelligence + 1;
+        await updateCharacterDetails(null, null, null, null, updatedIntelligence);
+        setIntelligence(updatedIntelligence);
       } else {
         // All levels are completed, start from the first level
         fetchLevelData(1);
@@ -93,7 +110,7 @@ const QuizPage = () => {
   };
 
   return (
-    <View style={styles.quizBody} className=" p-5">
+    <View style={styles.quizBody} className='p-5'>
       <Text className=' text-white text-3xl font-pblack'>Gymdle</Text>
       <Text style={styles.quizHeader} className=' text-2xl font-plight mt-5'>Level {currentLevel}</Text>
       {hints.map((hint, index) => (
@@ -124,8 +141,8 @@ const QuizPage = () => {
 const styles = StyleSheet.create({
   quizBody: {
     paddingTop: StatusBar.currentHeight,
+    flex: 1,
     backgroundColor: '#16191F',
-    height: '100%'
   },
   quizHeader:{
     color: '#FFF',
