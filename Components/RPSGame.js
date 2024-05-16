@@ -50,6 +50,14 @@ const RockPaperScissors = () => {
     fetchEnemyData();
   }, [enemyLevel]);
 
+  useEffect(() => {
+    const fetchCharacterData = async () => {
+      const character = await getCharacter();
+      setUsername(character.username);
+    };
+    fetchCharacterData();
+  },);
+
   const handlePlayerChoice = async (choice) => {
     setPlayerChoice(choice);
     const enemyOptions = ['rock', 'paper', 'scissors'];

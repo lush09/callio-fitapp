@@ -23,7 +23,7 @@ const WorkoutPage = () => {
         <View style={styles.textAndArrowArea}>
           <Image source={Arrow} style={styles.arrow}/>
           <View style={styles.textArea}>
-            <Link href="/UpperBody" style={styles.gap} className="py-7">
+            <Link href="/UpperBody" style={styles.gap} className="py-8">
               <Image source={UpperBody} style={styles.btnImage}/>
             </Link>
             <Link href="/Arm" style={styles.gap2} className="py-8">

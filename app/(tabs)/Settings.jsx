@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar,StyleSheet,Switch, View, Text,Dimensions, ScrollView, SafeAreaView, Image } from 'react-native';
+import { router } from "expo-router";
+import { TextInput,Modal,Alert, StatusBar,StyleSheet,Switch, View, Text,Dimensions, ScrollView, SafeAreaView, Image, Pressable } from 'react-native';
 import duck from "../../assets/Avatars/Pfp/duck-profile.png"
 import { useFonts } from 'expo-font';
-import { getCharacter } from '../../Database/database';
+import { getCharacter, resetDatabase, updateCharacterName } from '../../Database/database';
 
 var screenWidth = Dimensions.get('window').width;
 var width = screenWidth * .6;
 
 const SettingsPage = () => {
   const [username, setUsername] = useState('');
+  const [newUsername, setNewUsername] = useState('');
   const [gender, setGender] = useState('');
   const [isNew, setIsNew] = useState(false);
   const [isWorkout, setIsWorkout] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
+  const [changeNameVisible, setChangeNameVisible] = useState(false);
 
   useEffect(() => {
     const fetchCharacter = async () => {
@@ -28,7 +31,7 @@ const SettingsPage = () => {
     };
 
     fetchCharacter();
-  }, []);
+  }, [newUsername]);
 
   return (
     <SafeAreaView style={styles.settingsBody}>
@@ -47,16 +50,79 @@ const SettingsPage = () => {
           <Text className='text-white text-xl ml-5 font-pblack mb-2'>
             Account
           </Text>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={changeNameVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setChangeNameVisible(!changeNameVisible);
+            }}
+            className=' absolute'
+            >
+              <View className=' bg-slate-600 m-5 top-1/2 rounded-3xl'>
+                <View className='m-5'>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Username"
+                    placeholderTextColor={"#808080"}
+                    color={"#fff"}
+                    value={newUsername}
+                    onChangeText={setNewUsername}
+                  />
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress = { async () => {
+                      setChangeNameVisible(!changeNameVisible)
+                      await updateCharacterName(newUsername)
+                      setUsername(newUsername)
+                      setNewUsername('')
+                    }}>
+                    <Text style={styles.textStyle}>Confirm</Text>
+                  </Pressable>
+                </View>
+              </View>
+            
+          </Modal>
           <View className=' bg-white py-2 px-10 rounded-3xl'>
-            <Text className=' text-lg font-plight py-2 border-double border-gray-300 border-b'>
-              Change username
-            </Text>
-            <Text className=' text-lg font-plight py-2 border-double border-gray-300 border-b'>
-              Edit profile
-            </Text>
-            <Text className=' text-lg font-plight py-2'>
-              Delete account
-            </Text>
+          <Pressable 
+              onPress={() => setChangeNameVisible(!changeNameVisible)}>
+                <Text className=' text-lg font-plight py-2 border-double border-gray-300 border-b'>Change Username</Text>
+            </Pressable>
+            <Text className=' text-lg font-plight py-2 border-double border-gray-300 border-b'>Edit Profile</Text>
+            <Pressable 
+              onPress={() => {
+                Alert.alert(
+                  'Delete Account',
+                  'Do you want to delete your account? (This is irreversible.)',
+                  [
+                    {
+                      text: 'Cancel',
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Yes',
+                      onPress: async () => {
+                        try {
+                          await resetDatabase();
+                        } catch (error) {
+                          console.error('Error deleting account:', error);
+                        }
+                        router.replace('/')
+                      },
+                      style: 'destructive'
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              }}
+              style={({pressed}) => [
+                {
+                  color: pressed ? 'rgb(210, 230, 255)' : 'white',
+                }
+              ]}>
+                <Text className=' text-lg font-plight py-2'>Delete Account</Text>
+            </Pressable>
           </View>
         </View>
         <View className='mt-5 '>

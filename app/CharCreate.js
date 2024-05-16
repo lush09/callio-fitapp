@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Switch, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StatusBar,StyleSheet, Switch, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { createCharacter } from '../Database/database';
 import * as Font from 'expo-font';
 import { useFonts } from 'expo-font';
@@ -70,6 +70,8 @@ const CharCreate = ({ onCharacterCreated }) => {
 const styles = StyleSheet.create({
   CCContainer: {
     flex: 1,
+    paddingTop: StatusBar.currentHeight,
+    backgroundColor: '#16191F',
   },
   header: {
     paddingHorizontal: 25,

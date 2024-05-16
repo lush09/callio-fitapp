@@ -259,3 +259,63 @@ export const updateCombatEnemy = (level) => {
     });
   });
 }; 
+
+export const resetDatabase = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'DELETE FROM characters',
+        [],
+        (_, result) => {
+          console.log('Successful');
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+
+      tx.executeSql(
+        'UPDATE combatEnemy SET level = 1',
+        [],
+        (_, result) => {
+          console.log('Successful');
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+
+      tx.executeSql(
+        'UPDATE levels SET completed = 0',
+        [],
+        (_, result) => {
+          console.log('Succcessful');
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+export const updateCharacterName = (newName) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'UPDATE characters SET username = ?',
+        [newName],
+        (_, result) => {
+          console.log('Succcessful');
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
