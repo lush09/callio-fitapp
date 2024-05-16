@@ -17,6 +17,10 @@ const SettingsPage = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [changeNameVisible, setChangeNameVisible] = useState(false);
   const [deleteAccountVisible, setDeleteAccountVisible] = useState(false);
+  const [str, setStr] = useState(0);
+  const [vit, setVit] = useState(0);
+  const [int, setInt] = useState(0);
+
 
   useEffect(() => {
     const fetchCharacter = async () => {
@@ -25,6 +29,9 @@ const SettingsPage = () => {
         if (character) {
           setUsername(character.username);
           setGender(character.gender);
+          setVit(character.vitality);
+          setStr(character.strength);
+          setInt(character.intelligence);
         }
       } catch (error) {
         console.error('Error fetching character:', error);
@@ -40,12 +47,41 @@ const SettingsPage = () => {
         <Text className="ml-5 text-white text-3xl font-pblack">CALLIO</Text>
         <View className=" items-center mt-7">
           <Text className=" bg-white py-2 px-24 rounded-full text-lg font-plight">
-            Profile Settings
+            Profile
           </Text>
           <Image source={duck} style={styles.avatar} className=' my-5'/>
           <Text className="bg-white py-2 px-24 rounded-full text-lg font-plight">
             {username}
           </Text>
+        </View>
+        <View className=' mt-5 h-auto'>
+          <Text className='text-white text-xl ml-5 font-pblack mb-2'>
+            Statistics
+          </Text>
+          <View className=' bg-white py-2 px-10 rounded-3xl flex mb-5'>
+            <View className='flex-row '>
+              <Text className=' text-lg w-1/3 text-center font-pbold'>
+                VIT
+              </Text>
+              <Text className=' text-lg w-1/3 text-center font-pbold'>
+                STR
+              </Text>
+              <Text className=' text-lg w-1/3 text-center font-pbold'>
+                INT
+              </Text>
+            </View>
+            <View className='flex-row '>
+              <Text className=' text-lg w-1/3 text-green-500 text-center font-plight'>
+                {vit}
+              </Text>
+              <Text className=' text-lg w-1/3 text-red-500 text-center font-plight'>
+                {str}
+              </Text>
+              <Text className=' text-lg w-1/3 text-blue-500 text-center font-plight'>
+                {int}
+              </Text>
+            </View>
+          </View>
         </View>
         <View className=' mt-5 h-auto'>
           <Text className='text-white text-xl ml-5 font-pblack mb-2'>

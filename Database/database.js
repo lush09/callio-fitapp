@@ -104,12 +104,46 @@ export const initializeDatabase = () => {
   });
 };
 
-export const updateCharacterDetails = (height, weight, age, activity, intelligence) => {
+export const updateCharacterDetails = (height, weight, age, activity, intelligence, ) => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
         'UPDATE characters SET height = ?, weight = ?, age = ?, activity = ?, intelligence = ?',
         [height, weight, age, activity, intelligence],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+export const updateVitality = ( vitality ) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'UPDATE characters SET vitality = ?',
+        [vitality],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+export const updateStrength = ( strength ) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'UPDATE characters SET strength = ?',
+        [strength],
         (_, result) => {
           resolve(result);
         },

@@ -54,6 +54,9 @@ const RockPaperScissors = () => {
     const fetchCharacterData = async () => {
       const character = await getCharacter();
       setUsername(character.username);
+      setPlayerMaxHP(character.vitality);
+      setPlayerStrength(character.strength);
+      setPlayerIntelligence(character.intelligence);
     };
     fetchCharacterData();
   },);
