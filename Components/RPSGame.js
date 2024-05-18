@@ -262,7 +262,8 @@ const RockPaperScissors = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    height: 610,
+    backgroundColor: '#000',
+    height: 530,
   },
   hp: {
     alignItems: 'center',
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
   },
   HPNumber: {
     flexDirection: 'row',
-    gap: 270,
+    gap: 240,
     zIndex: 1,
   },
   HPBars: {
@@ -287,7 +288,7 @@ const styles = StyleSheet.create({
   fightAnimation: {
     height: "80%",
     width: "100%",
-    bottom:'5%'
+    bottom:'3%'
   },
   fightHeader: {
     flexDirection: 'row',

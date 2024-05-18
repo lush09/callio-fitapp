@@ -38,7 +38,7 @@ const Arm = () => {
           data={DATA}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => setClickedItemVisible(item.id)}>
-              <View className=' mt-10 p-5 border bg-slate-500 rounded-3xl flex-row items-center'>
+              <View className=' mt-5 p-5 border bg-slate-500 rounded-3xl flex-row items-center'>
                 <Modal
                   animationType="fade"
                   transparent={true}

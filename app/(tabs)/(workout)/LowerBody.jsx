@@ -1,5 +1,5 @@
 import { Modal,Image,FlatList, StatusBar,StyleSheet, Text, View, TouchableOpacity, Pressable } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import DATA from '../../../Database/lowerbodydata.js'
 import workout from '../../../assets/App-Icons/workout.png'
 import YoutubePlayer from 'react-native-youtube-iframe'
@@ -38,7 +38,7 @@ const LowerBody = () => {
           data={DATA}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => setClickedItemVisible(item.id)}>
-              <View className=' mt-10 p-5 border bg-slate-500 rounded-3xl flex-row items-center'>
+              <View className=' mt-5 p-5 border bg-slate-500 rounded-3xl flex-row items-center'>
                 <Modal
                   animationType="fade"
                   transparent={true}
